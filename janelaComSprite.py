@@ -12,7 +12,7 @@ pygame.init()
 # Define as dimensões da janela
 largura, altura = 300, 200
 tela = pygame.display.set_mode((largura, altura))
-pygame.display.set_caption("teste com botão e sprite")
+pygame.display.set_caption("Janela com Botão")
 
 # Define as cores
 branco = (255, 255, 255)
@@ -20,11 +20,10 @@ cinza = (200, 200, 200)
 preto = (0, 0, 0)
 
 # Carrega a sprite sheet do personagem
-# o arquivo deve conter todas as imagens em uma unica linha
 sprite_sheet = pygame.image.load("Attack.png").convert_alpha()
 num_quadros = 8  # Número de quadros na sprite sheet
 
-# Calcula os tamanhos corretos dos quadros
+# Ajuste para os tamanhos corretos
 quadro_largura = sprite_sheet.get_width() // num_quadros  # Largura de cada quadro
 quadro_altura = sprite_sheet.get_height()  # Altura total da sprite sheet
 
@@ -48,8 +47,9 @@ y_botao = altura - altura_botao - 10
 
 # Variáveis de animação
 indice_quadro = 0
-tempo_animacao = 100  # Tempo a cada quadro em milissegundos
+tempo_animacao = 100  # Tempo a cada quadro em milissegundos (ajustável)
 cronometro = 0
+ultimo_tempo = pygame.time.get_ticks()
 
 # Loop principal
 rodando = True
@@ -61,11 +61,11 @@ while rodando:
             if botao.collidepoint(evento.pos):
                 rodando = False
 
-    # Atualiza o quadro da animação
-    cronometro += pygame.time.get_ticks()
-    if cronometro > tempo_animacao:
+    # Calcula o tempo passado desde o último quadro
+    agora = pygame.time.get_ticks()
+    if agora - ultimo_tempo > tempo_animacao:
         indice_quadro = (indice_quadro + 1) % num_quadros
-        cronometro = 0
+        ultimo_tempo = agora  # Atualiza o último tempo
 
     # Preenche o fundo de branco
     tela.fill(branco)
